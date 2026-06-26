@@ -66,7 +66,7 @@ window.Portal = {
           if (schoolGameEl) schoolGameEl.textContent = school.school_name;
         }
 
-        this.showLoadingScreen(true, 'در حال احراز هویت و دریافت نمایه شما...', '60%');
+        this.showLoadingScreen(true, 'در حال احراز هویت و دریافت نمایه‌ات...', '60%');
 
         const { data: profile, error: errProf } = await this.supabaseClient.rpc('get_student_profile', {
           query_student_id: this.studentId,
@@ -291,7 +291,7 @@ window.Portal = {
         statusText.style.color = '#d32f2f';
         statusText.innerHTML = `❌ خطای ارسال اطلاعات!<br/>
         <span style="font-size: 11pt; font-weight: normal; color: #6a1b9a; display: block; margin-top: 5px; line-height:1.7;">
-            <b>علت خطا:</b> اتصال اینترنت شما قطع است یا سرور پرتال پاسخ نمی‌دهد.<br/>
+            <b>علت خطا:</b> اتصال اینترنتت قطع است یا سرور پرتال پاسخ نمی‌دهد.<br/>
             <b>راهنما:</b> لطفا داده گوشی را روشن کرده و دکمه زیر را بزنید. پیشرفت شما تا زمان ارسال در حافظه گوشی محفوظ است.
         </span>`;
       }
