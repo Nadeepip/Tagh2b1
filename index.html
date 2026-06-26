@@ -855,8 +855,9 @@
         async function authenticatePortalStudent() {
             await Portal.authenticate({
                 onSuccess: (data) => {
-                    STORAGE = `studentProfile_div_2d1d_v2_${Portal.studentId}`;
-                    GAME_STATE_STORAGE = `div_2d1d_v203_smart_box_game_${Portal.studentId}`;
+                    // تغییر: اضافه شدن شناسه تکلیف به STORAGE و GAME_STATE_STORAGE برای رفع مشکل تداخل تکالیف همسان
+                    STORAGE = `studentProfile_div_2d1d_v2_${Portal.studentId}_${Portal.homeworkId}`;
+                    GAME_STATE_STORAGE = `div_2d1d_v203_smart_box_game_${Portal.studentId}_${Portal.homeworkId}`;
                     
                     const saved = localStorage.getItem(STORAGE);
                     if (saved) {
@@ -864,7 +865,8 @@
                             app.state = JSON.parse(saved);
                         } catch (e) {}
                     } else {
-                        app.state = { user: data.name, stats: { games: data.plays, stats: { games: 0, stars: 0 } } };
+                        // اصلاح جزئی خطای ساختاری مقدار اولیه
+                        app.state = { user: data.name, stats: { games: data.plays, stars: data.stars } };
                     }
                     
                     app.state.user = data.name;
