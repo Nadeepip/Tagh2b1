@@ -134,7 +134,7 @@
                     <div style="text-align:center; font-size:16pt; font-weight:bold; color:#7b1fa2; margin-bottom:15px;" id="portal-school-title">دبستان معاد خرگوشی</div>
                     
                     <div style="text-align: center; margin-bottom: 20px;">
-                        <span style="font-size: 15pt; font-weight: bold; color: #4a148c; display: block;" id="portal-student-welcome">سلام دانش‌آموز زرنگم! 🌟</span>
+                        <span style="font-size: 15pt; font-weight: bold; color: #4a148c; display: block;" id="portal-student-welcome">سلام قهرمان قشنگم! 🌟</span>
                     </div>
 
                     <div style="display: flex; flex-direction: column; gap: 12px; background: rgba(255, 255, 255, 0.7); border-radius: 14px; padding: 15px; border: 1px solid rgba(225, 190, 231, 0.5);">
@@ -222,6 +222,10 @@
                 <div class="report-item"><span>زمان گزارش:</span><span id="rep-time" style="direction: ltr; font-size:0.9rem;">-</span></div>
                 <div class="report-item"><span>تعداد کل بازی‌ها:</span><span id="rep-games">-</span></div>
                 <div class="report-item"><span>ستاره‌های کل:</span><span>⭐ <span id="rep-stars">-</span></span></div>
+                <div class="report-item" id="rep-req-stars-row" style="display: none;">
+                    <span>🎯 ستاره مورد نیاز تکلیف:</span>
+                    <span>⭐ <span id="rep-req-stars">-</span></span>
+                </div>
                 <div class="report-item"><span>کمک گرفته شده:</span><span id="rep-help">-</span></div>
             </div>
             
@@ -325,7 +329,9 @@
             async finishGame(success) {
                 this.state.stats.games++;
                 const earnedThisGame = (success && !game.helpUsed) ? 1 : 0;
-                if (earnedThisGame > 0) this.state.stats.stars = Math.max(this.state.stats.stars, earnedThisGame);
+                if (earnedThisGame > 0) {
+                    this.state.stats.stars += earnedThisGame;
+                }
                 this.state.lastHelp = game.helpUsed; this.state.reportShown = true; this.state.whatsappSent = false;
                 this.save(); this.updateStats(); game.clearState();
 
@@ -352,6 +358,16 @@
                 getEl('rep-name').innerText = this.state.user; getEl('rep-time').innerText = nowStr();
                 getEl('rep-games').innerText = toPersian(this.state.stats.games); getEl('rep-stars').innerText = toPersian(stars);
                 getEl('rep-help').innerText = this.state.lastHelp ? 'بله (آموزشی)' : 'خیر';
+
+                if (Portal.isPortalMode) {
+                    const reqRow = getEl('rep-req-stars-row');
+                    if (reqRow) reqRow.style.display = 'flex';
+                    const reqStarsSpan = getEl('rep-req-stars');
+                    if (reqStarsSpan) reqStarsSpan.textContent = toPersian(Portal.requiredStars);
+                } else {
+                    const reqRow = getEl('rep-req-stars-row');
+                    if (reqRow) reqRow.style.display = 'none';
+                }
 
                 const goalBadge = getEl('portal-goal-reached-badge');
                 const submitBadge = getEl('portal-submit-badge');

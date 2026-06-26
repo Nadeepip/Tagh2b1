@@ -250,7 +250,7 @@ window.Portal = {
 
       const pendingStars = parseInt(localStorage.getItem(pendingStarsKey)) || 0;
       const currentPlays = this.previousPlays + 1;
-      const currentStars = Math.max(this.previousStars, pendingStars);
+      const currentStars = this.previousStars + pendingStars;
       const currentPersianDateTime = this.getPersianDateTime();
 
       if (progressBar) progressBar.style.width = '50%';
@@ -262,7 +262,7 @@ window.Portal = {
         query_homework_id: this.homeworkId,
         query_game_id: this.gameId,
         plays: currentPlays,
-        stars: pendingStars,
+        stars: currentStars,
         duration: 0,
         played_at: currentPersianDateTime
       });
@@ -297,7 +297,7 @@ window.Portal = {
       if (statusText) {
         statusText.style.color = '#d32f2f';
         statusText.innerHTML = `❌ خطای ارسال اطلاعات!<br/>
-        <span style="font-size: 11pt; font-weight: normal; color: #666; display: block; margin-top: 5px; line-height:1.7;">
+        <span style="font-size: 11pt; font-weight: normal; color: #6a1b9a; display: block; margin-top: 5px; line-height:1.7;">
             <b>علت خطا:</b> اتصال اینترنت شما قطع است یا سرور پرتال پاسخ نمی‌دهد.<br/>
             <b>راهنما:</b> لطفا داده گوشی را روشن کرده و دکمه زیر را بزنید. پیشرفت شما تا زمان ارسال در حافظه گوشی محفوظ است.
         </span>`;
