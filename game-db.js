@@ -193,7 +193,10 @@ window.Portal = {
       const screens = ['screen-register', 'screen-game', 'screen-report', 'portal-submitting-screen'];
       screens.forEach(s => {
         const el = document.getElementById(s);
-        if (el) el.style.display = 'none';
+        if (el) {
+          el.classList.add('hidden');
+          el.style.display = '';
+        }
       });
       if (loadingBar) loadingBar.style.width = progressPercent;
       if (loadingText) loadingText.innerText = text;

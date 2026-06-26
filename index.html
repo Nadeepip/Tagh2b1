@@ -134,7 +134,7 @@
                     <div style="text-align:center; font-size:16pt; font-weight:bold; color:#7b1fa2; margin-bottom:15px;" id="portal-school-title">دبستان معاد خرگوشی</div>
                     
                     <div style="text-align: center; margin-bottom: 20px;">
-                        <span style="font-size: 15pt; font-weight: bold; color: #4a148c; display: block;" id="portal-student-welcome">سلام دانش‌آموز زرنگم! 🌟</span>
+                        <span style="font-size: 15pt; font-weight: bold; color: #4a148c; display: block;" id="portal-student-welcome">سلام قهرمان قشنگم! 🌟</span>
                     </div>
 
                     <div style="display: flex; flex-direction: column; gap: 12px; background: rgba(255, 255, 255, 0.7); border-radius: 14px; padding: 15px; border: 1px solid rgba(225, 190, 231, 0.5);">
@@ -300,8 +300,13 @@
                 this.save(); this.showScreen('screen-game'); this.updateStats(); game.start();
             },
             showScreen(id) {
-                document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
-                getEl(id).classList.remove('hidden');
+                document.querySelectorAll('.screen').forEach(s => {
+                    s.classList.add('hidden');
+                    s.style.display = '';
+                });
+                const target = getEl(id);
+                target.classList.remove('hidden');
+                target.style.display = '';
                 getEl('stats-bar').classList.toggle('hidden', id === 'screen-register');
                 if (id === 'screen-report') {
                     const stars = Portal.isPortalMode ? Portal.previousStars : this.state.stats.stars;
