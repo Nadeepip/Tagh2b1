@@ -307,10 +307,10 @@
                 if (saved) {
                     try {
                         const parsed = JSON.parse(saved);
-                        if (!parsed.stats) parsed.stats = { games: 0, stars: 0 };
+                        if (!parsed.stats) parsed.stats = { games: 0, stats: { games: 0, stars: 0 } };
                         this.state = parsed;
                     } catch (e) {
-                        this.state = { user: null, stats: { games: 0, stars: 0 } };
+                        this.state = { user: null, stats: { games: 0, stats: { games: 0, stars: 0 } } };
                     }
                     if (this.state.user) {
                         this.updateStats();
@@ -941,6 +941,7 @@
                     }
                 },
                 onFailure: (err) => {
+                    app.showScreen('screen-register');
                     getEl('register-container').style.display = 'none';
                     getEl('portal-error-section').style.display = 'block';
                 },
@@ -949,7 +950,7 @@
                     const errSec = getEl('portal-error-section');
                     if (errSec) {
                         getEl('portal-error-title').textContent = 'لینک ورود نامعتبر است';
-                        getEl('portal-error-desc').innerHTML = 'جهت انجام این تکلیف، حتماً باید از طریق پنل مدرسه و با لینک اختصاصی خودت وارد شوی.';
+                        getEl('portal-error-desc').innerHTML = 'جهت انجام این تکلیف، حتماً باید از طریق پنل مدرسه و با لینک اختصاصی خود وارد شوید.';
                         getEl('portal-retry-auth-btn').style.display = 'none';
                         errSec.style.display = 'block';
                     }

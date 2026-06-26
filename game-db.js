@@ -200,6 +200,8 @@ window.Portal = {
   showErrorScreen(show) {
     const errSec = document.getElementById('portal-error-section');
     const regSec = document.getElementById('register-container');
+    const regScreen = document.getElementById('screen-register');
+    if (regScreen && show) regScreen.classList.remove('hidden');
     if (errSec) errSec.style.display = show ? 'block' : 'none';
     if (regSec) regSec.style.display = show ? 'none' : 'block';
   },
@@ -292,7 +294,7 @@ window.Portal = {
         statusText.innerHTML = `❌ خطای ارسال اطلاعات!<br/>
         <span style="font-size: 11pt; font-weight: normal; color: #6a1b9a; display: block; margin-top: 5px; line-height:1.7;">
             <b>علت خطا:</b> اتصال اینترنتت قطع است یا سرور پرتال پاسخ نمی‌دهد.<br/>
-            <b>راهنما:</b> لطفا داده گوشی را روشن کرده و دکمه زیر را بزنید. پیشرفت شما تا زمان ارسال در حافظه گوشی محفوظ است.
+            <b>راهنما:</b> لطفا داده گوشی را روشن کن و دکمه زیر را بزن. پیشرفت تو تا زمان ارسال در حافظه گوشی محفوظ است.
         </span>`;
       }
       if (retryBtn) retryBtn.style.display = 'block';
