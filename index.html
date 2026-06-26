@@ -134,7 +134,7 @@
                     <div style="text-align:center; font-size:16pt; font-weight:bold; color:#7b1fa2; margin-bottom:15px;" id="portal-school-title">دبستان معاد خرگوشی</div>
                     
                     <div style="text-align: center; margin-bottom: 20px;">
-                        <span style="font-size: 15pt; font-weight: bold; color: #4a148c; display: block;" id="portal-student-welcome">سلام قهرمان قشنگم! 🌟</span>
+                        <span style="font-size: 15pt; font-weight: bold; color: #4a148c; display: block;" id="portal-student-welcome">سلام دانش‌آموز زرنگم! 🌟</span>
                     </div>
 
                     <div style="display: flex; flex-direction: column; gap: 12px; background: rgba(255, 255, 255, 0.7); border-radius: 14px; padding: 15px; border: 1px solid rgba(225, 190, 231, 0.5);">
@@ -209,12 +209,12 @@
         <div class="report-card" style="margin: 70px auto 30px;">
             <h3 style="text-align: center;">تبریک! تمرین تمام شد 🎉</h3>
             
-            <div id="portal-submit-badge" style="display:none; background:#e8f5e9; border:1px solid #c8e6c9; color:#2e7d32; padding:12px; border-radius:10px; margin-bottom:12px; font-weight:bold; font-size:11.5pt; line-height:1.6; text-align:right;">
-                پیشرفت و ستاره جدید شما با موفقیت در سیستم ثبت شد. تایید نهایی و ثبت وضعیت انجام تکلیف در پرتال، پس از بررسی آموزگار محترم صورت می‌پذیرد.
+            <div id="portal-submit-badge" style="display:none; background:#fff3e0; border:1px solid #ffe082; color:#e65100; padding:15px; border-radius:12px; margin-bottom:12px; font-weight:bold; font-size:12.5pt; line-height:1.6; text-align:right;">
+                ✨ آفرین دانش‌آموز زرنگم! یک ستاره‌ی طلاییِ جدید گرفتی و با موفقیت ثبت شد! ⭐ برای تموم کردن این تکلیف، فقط به چند تا ستاره‌ی قشنگ دیگه نیاز داری. بدو برو بعدی رو حل کن! 🏆
             </div>
 
-            <div id="portal-goal-reached-badge" style="display:none; background:#e8f5e9; border:2px solid #2e7d32; color:#1b5e20; padding:15px; border-radius:12px; margin-bottom:15px; font-weight:bold; font-size:12.5pt; line-height:1.6; direction:rtl; text-align:right;">
-                🏆 ستاره‌های طلایی شما با موفقیت در پایگاه داده ثبت شد. تیک سبز اتمام تکلیف (✅) در پرتال دانش‌آموز، به زودی و پس از بررسی و تایید نهایی معلم فعال خواهد شد.
+            <div id="portal-goal-reached-badge" style="display:none; background:#e8f5e9; border:2px solid #2e7d32; color:#1b5e20; padding:15px; border-radius:12px; margin-bottom:15px; font-weight:bold; font-size:13.5pt; line-height:1.6; direction:rtl; text-align:right;">
+                🎉 هوراااا قهرمان پرتلاش! هدف تکلیف رو کاملاً ترکوندی و همه‌ی ستاره‌های مورد نیاز رو گرفتی! تو فوق‌العاده‌ای! 🥇 حالا می‌تونی با خیال راحت به پرتال برگردی. خداقوت! ❤️
             </div>
 
             <div class="report-details" id="reportDetails" style="margin-bottom: 20px;">
@@ -324,7 +324,7 @@
             },
             async finishGame(success) {
                 this.state.stats.games++;
-                const earnedThisGame = (success && !game.helpUsed) ? 3 : 0;
+                const earnedThisGame = (success && !game.helpUsed) ? 1 : 0;
                 if (earnedThisGame > 0) this.state.stats.stars = Math.max(this.state.stats.stars, earnedThisGame);
                 this.state.lastHelp = game.helpUsed; this.state.reportShown = true; this.state.whatsappSent = false;
                 this.save(); this.updateStats(); game.clearState();
@@ -833,7 +833,7 @@
                             app.state = JSON.parse(saved);
                         } catch (e) {}
                     } else {
-                        app.state = { user: data.name, stats: { games: data.plays, stars: data.stars } };
+                        app.state = { user: data.name, stats: { games: data.plays, stats: { games: 0, stars: 0 } } };
                     }
                     
                     app.state.user = data.name;
