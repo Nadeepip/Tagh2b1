@@ -209,11 +209,10 @@
         <div class="report-card" style="margin: 70px auto 30px;">
             <h3 style="text-align: center;">تبریک! تمرین تمام شد 🎉</h3>
             
-            <div id="portal-submit-badge" style="display:none; background:#fff3e0; border:1px solid #ffe082; color:#e65100; padding:15px; border-radius:12px; margin-bottom:12px; font-weight:bold; font-size:12.5pt; line-height:1.6; text-align:right;">
-                ✨ آفرین دانش‌آموز زرنگم! یک ستاره‌ی طلاییِ جدید گرفتی و با موفقیت ثبت شد! ⭐ برای تموم کردن این تکلیف، فقط به چند تا ستاره‌ی قشنگ دیگه نیاز داری. بدو برو بعدی رو حل کن! 🏆
+            <div id="portal-submit-badge" style="display:none; background:#fff3e0; border:1px solid #ffe082; color:#e65100; padding:15px; border-radius:12px; margin-bottom:12px; font-weight:bold; font-size:11.5pt; line-height:1.6; text-align:right;">
             </div>
 
-            <div id="portal-goal-reached-badge" style="display:none; background:#e8f5e9; border:2px solid #2e7d32; color:#1b5e20; padding:15px; border-radius:12px; margin-bottom:15px; font-weight:bold; font-size:13.5pt; line-height:1.6; direction:rtl; text-align:right;">
+            <div id="portal-goal-reached-badge" style="display:none; background:#e8f5e9; border:2px solid #2e7d32; color:#1b5e20; padding:15px; border-radius:12px; margin-bottom:15px; font-weight:bold; font-size:12.5pt; line-height:1.6; direction:rtl; text-align:right;">
                 🎉 هوراااا قهرمان پرتلاش! هدف تکلیف رو کاملاً ترکوندی و همه‌ی ستاره‌های مورد نیاز رو گرفتی! تو فوق‌العاده‌ای! 🥇 حالا می‌تونی با خیال راحت به پرتال برگردی. خداقوت! ❤️
             </div>
 
@@ -380,7 +379,21 @@
                 if (backInstruction) backInstruction.style.display = 'none';
 
                 if (Portal.isPortalMode) {
-                    if (goalReached) {
+                    if (this.state.lastHelp) {
+                        if (againBtn) {
+                            againBtn.textContent = 'بازی دوباره بدون کمک 💡';
+                            againBtn.style.display = 'block';
+                        }
+                        if (backInstruction) {
+                            backInstruction.innerHTML = `
+                                <div style="background:#f5f5f5; border:1px solid #e0e0e0; color:#616161; padding:15px; border-radius:12px; margin-top:10px; font-weight:bold; font-size:12pt; line-height:1.6; text-align:center;">
+                                    💡 این یک دورِ آموزشی بود. برای گرفتن ستاره و تکمیل تکلیف، باید یک‌بار بدون کمک (💡) بازی کنی.<br>
+                                    برای خروج، دکمه <b>بازگشت (Back) گوشی</b> را بزن.
+                                </div>
+                            `;
+                            backInstruction.style.display = 'block';
+                        }
+                    } else if (goalReached) {
                         if (goalBadge) {
                             const goalCount = getEl('portal-goal-reached-count');
                             if (goalCount) goalCount.textContent = toPersian(Portal.requiredStars);
@@ -397,6 +410,8 @@
                         }
                     } else {
                         if (submitBadge) {
+                            const remaining = Portal.requiredStars - stars;
+                            submitBadge.innerHTML = `✨ آفرین دانش‌آموز زرنگم! تو <b>${toPersian(stars)}</b> ستاره از <b>${toPersian(Portal.requiredStars)}</b> ستاره‌ی این تکلیف رو گرفتی! ⭐ فقط به <b>${toPersian(remaining)}</b> ستاره‌ی دیگه نیاز داری تا تیک تکلیف بخوره. بدو برو بعدی رو حل کن! 🏆`;
                             submitBadge.style.display = 'block';
                         }
                         if (againBtn) {
