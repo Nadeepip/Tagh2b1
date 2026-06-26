@@ -1,8 +1,8 @@
-const CACHE_NAME = 'adad-be-horoof-v2-cache-v4';
+const CACHE_NAME = 'division-game-v1';
 const ASSETS = [
   './',
   './index.html',
-  './portal.js',
+  './game-db.js',
   './supabase.js',
   './Vazirmatn-Regular.woff2',
   './Vazirmatn-Bold.woff2'
