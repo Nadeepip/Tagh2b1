@@ -170,6 +170,28 @@
         </div>
     </div>
 
+    <div id="screen-assistant" class="screen hidden">
+        <div class="report-card" style="margin: 70px auto 30px; text-align: center;">
+            <h2 style="color: #7b1fa2; margin-bottom: 20px;">🌟 دستیار ثبت ستاره 🌟</h2>
+            <div style="background: #f3e5f5; border: 2px solid #e1bee7; border-radius: 15px; padding: 20px; margin-bottom: 25px; line-height: 1.8; text-align: right; direction: rtl;">
+                <span style="font-size: 14pt; font-weight: bold; color: #4a148c; display: block; margin-bottom: 10px;" id="ast-welcome">سلام قهرمان!</span>
+                <p style="font-size: 12pt; color: #333; margin: 0;">
+                    بازی قبلی شما با موفقیت تمام شده بود، اما به خاطر قطع شدن اینترنت، ستاره‌ی طلایی‌ات به دفتر کلاسی معلم نرسیده بود. 
+                    <br/>
+                    اصلاً نگران نباش! نیازی به بازی دوباره نیست. دکمه زیر را بزن تا ستاره‌ات ثبت بشه و کارنامه‌ات رو ببینی. 😊
+                </p>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px; background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 15px; margin-bottom: 25px; text-align: right; direction: rtl;">
+                <div style="display:flex; justify-content:space-between; align-items:center;"><span>👤 نام و نشان شما:</span><span id="ast-name" style="font-weight:bold; color:#7b1fa2;">---</span></div>
+                <div style="display:flex; justify-content:space-between; align-items:center;"><span>⭐ ستاره‌های ثبت‌شده قبلی:</span><span id="ast-stars" style="font-weight:bold; color:#f9a825;">۰ ⭐</span></div>
+                <div style="display:flex; justify-content:space-between; align-items:center;"><span>🎯 ستاره هدف تکلیف:</span><span id="ast-req-stars" style="font-weight:bold; color:#2e7d32;">۰ ⭐</span></div>
+            </div>
+
+            <button class="btn btn-success" style="width: 100%; padding: 15px; font-size: 13pt;" onclick="app.submitAssistantStar()">🌟 ثبت ستاره‌ی طلایی من و دریافت کارنامه</button>
+        </div>
+    </div>
+
     <div id="screen-game" class="screen hidden">
         <div id="top-ui-container">
             <button id="help-button" class="btn btn-warning" onclick="game.getHelp()">💡</button> 
@@ -852,10 +874,19 @@
             if(lock) el.classList.add('correct', 'readonly');
         }
 
+        app.submitAssistantStar = async function() {
+            app.showScreen('portal-submitting-screen');
+            await Portal.submitProgress(null, {
+                onSuccess: (data) => {
+                    authenticatePortalStudent();
+                },
+                onFailure: (err) => {}
+            });
+        };
+
         async function authenticatePortalStudent() {
             await Portal.authenticate({
                 onSuccess: (data) => {
-                    // تغییر: اضافه شدن شناسه تکلیف به STORAGE و GAME_STATE_STORAGE برای رفع مشکل تداخل تکالیف همسان
                     STORAGE = `studentProfile_div_2d1d_v2_${Portal.studentId}_${Portal.homeworkId}`;
                     GAME_STATE_STORAGE = `div_2d1d_v203_smart_box_game_${Portal.studentId}_${Portal.homeworkId}`;
                     
@@ -865,13 +896,16 @@
                             app.state = JSON.parse(saved);
                         } catch (e) {}
                     } else {
-                        // اصلاح جزئی خطای ساختاری مقدار اولیه
                         app.state = { user: data.name, stats: { games: data.plays, stars: data.stars } };
                     }
                     
-                    app.state.user = data.name;
-                    app.state.stats.games = data.plays;
-                    app.state.stats.stars = data.stars;
+                    if (!app.state) app.state = {};
+                    if (!app.state.stats) app.state.stats = { games: 0, stars: 0 };
+
+                    app.state.user = data.name || Portal.studentName || app.state.user || "دانش‌آموز";
+                    app.state.stats.games = data.plays !== undefined ? data.plays : app.state.stats.games;
+                    app.state.stats.stars = data.stars !== undefined ? data.stars : app.state.stats.stars;
+                    
                     app.save();
                     app.updateStats();
 
@@ -888,7 +922,16 @@
                     }
                     startBtn.style.display = 'inline-block';
                     
-                    if (app.state.reportShown) {
+                    const needsSubmitKey = `portal_needs_submit_${Portal.gameId}_${Portal.studentId}_${Portal.homeworkId}`;
+                    const hasUnsentStar = localStorage.getItem(needsSubmitKey) === 'true';
+
+                    if (hasUnsentStar) {
+                        getEl('ast-welcome').textContent = `سلام ${app.state.user} عزیز! 🌟`;
+                        getEl('ast-name').textContent = app.state.user;
+                        getEl('ast-stars').textContent = toPersian(app.state.stats.stars) + ' ⭐';
+                        getEl('ast-req-stars').textContent = toPersian(Portal.requiredStars) + ' ⭐';
+                        app.showScreen('screen-assistant');
+                    } else if (app.state.reportShown) {
                         app.showScreen('screen-report');
                     } else if (activeState) {
                         app.showScreen('screen-game');

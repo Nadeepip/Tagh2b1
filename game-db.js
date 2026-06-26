@@ -103,15 +103,6 @@ window.Portal = {
             this.previousStars = progress.stars_earned || 0;
           }
 
-          // تغییر: کلید بررسی وجود نمرات ثبت‌نشده با شناسه‌های دانش‌آموز و تکلیف بهینه‌سازی و تفکیک شد
-          const needsSubmitKey = `portal_needs_submit_${this.gameId}_${this.studentId}_${this.homeworkId}`;
-          if (localStorage.getItem(needsSubmitKey) === 'true') {
-            this.showLoadingScreen(true, 'شناسایی نمرات ثبت‌نشده...', '100%');
-            await new Promise(resolve => setTimeout(resolve, 200));
-            await this.submitProgress(null, callbacks);
-            return;
-          }
-
           this.showLoadingScreen(true, 'اتصال موفق!', '100%');
           await new Promise(resolve => setTimeout(resolve, 300));
           this.showLoadingScreen(false);
@@ -191,7 +182,7 @@ window.Portal = {
 
     if (show) {
       loadingScreen.style.display = 'flex';
-      const screens = ['screen-register', 'screen-game', 'screen-report', 'portal-submitting-screen'];
+      const screens = ['screen-register', 'screen-game', 'screen-report', 'portal-submitting-screen', 'screen-assistant'];
       screens.forEach(s => {
         const el = document.getElementById(s);
         if (el) {
@@ -216,7 +207,6 @@ window.Portal = {
   async submitProgress(stars, callbacks) {
     if (callbacks) this._lastSubmitCallbacks = callbacks;
     
-    // تغییر: ایجاد کلیدهای مدیریت آفلاین نمره به صورت پویا با ترکیب شناسه بازی، دانش‌آموز و تکلیف
     const needsSubmitKey = `portal_needs_submit_${this.gameId}_${this.studentId}_${this.homeworkId}`;
     const pendingStarsKey = `portal_pending_stars_${this.gameId}_${this.studentId}_${this.homeworkId}`;
 
@@ -232,7 +222,7 @@ window.Portal = {
 
     if (submitScreen) submitScreen.style.display = 'flex';
     
-    ['screen-register', 'screen-game', 'screen-report', 'Screen-Loading'].forEach(s => {
+    ['screen-register', 'screen-game', 'screen-report', 'Screen-Loading', 'screen-assistant'].forEach(s => {
       const el = document.getElementById(s);
       if (el) el.style.display = 'none';
     });
